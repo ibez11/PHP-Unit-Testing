@@ -31,27 +31,22 @@
             "dont-discover": []
         }
     },
-	"repositories": [
-        {
-            "type": "path",
-            "url": "D://host/packages/Ajthinking/PHPFileManipulator"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/"
         },
         "classmap": [
-			"packages/Ajthinking/PHPFileManipulator/tests",
             "database/seeds",
             "database/factories"
         ]
     },
     "autoload-dev": {
-        "classmap": [
-			"tests/",
-			"database/"
-		]
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+		"classmap": [
+			"packages/Ajthinking/PHPFileManipulator/tests"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
