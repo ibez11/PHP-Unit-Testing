@@ -1,0 +1,45 @@
+name: Laravel-wrapped-package-test
+
+on: [push]
+
+jobs:
+  laravel-tests:
+    runs-on: windows-latest
+    steps:
+    - name: Install host app
+      run: composer create-project --prefer-dist laravel/laravel host
+      
+    - name: Install package (this repo)
+      uses: actions/checkout@v2
+      with:
+        path: host/packages/Ajthinking/PHPFileManipulator
+
+    - name: Add this package to composer.json repositories
+      uses: ajthinking/merge-json-files@v1.0.20
+      with:
+        repo_relative_path: 'host/packages/Ajthinking/PHPFileManipulator'
+        
+    - name: Add this classmap to composer.json repositories
+      uses: packages/Ajthinking/PHPFileManipulator/tests
+      with:
+        repo_relative_path: host/packages/Ajthinking/PHPFileManipulator/tests
+
+    - name: Require this package
+      working-directory: ./host
+      run: composer require ajthinking/php-file-manipulator @dev
+
+    - name: Publish things
+      working-directory: ./host
+      run: php artisan vendor:publish --provider="PHPFileManipulator\ServiceProvider"
+
+    - name: Clear up cache and autoload
+      working-directory: ./host
+      run: composer dumpautoload && php artisan cache:clear && php artisan config:clear 
+
+    - name: Reinstalling
+      working-directory: ./host
+      run: composer install  
+     
+    - name: Run tests
+      working-directory: ./host      
+      run: vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
