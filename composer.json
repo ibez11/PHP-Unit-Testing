@@ -34,7 +34,7 @@
 	"repositories": [
         {
             "type": "path",
-            "url": "packages/Ajthinking/PHPFileManipulator"
+            "url": "../../packages/Ajthinking/PHPFileManipulator"
         }
     ],
     "autoload": {
